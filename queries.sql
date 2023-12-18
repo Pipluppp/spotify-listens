@@ -68,6 +68,33 @@ FROM song_skips
 ORDER BY skips DESC, total_plays DESC
 LIMIT 10;
 
+-- Top 5 Songs of my Top 10 Artists
+WITH summary AS
+(
+    SELECT songs.name AS song_name, artists.name AS artist_name, SUM(ms_played) as playtime
+    FROM listens
+    JOIN artists ON listens.artist_id = artists.id
+    JOIN songs ON listens.song_id = songs.id
+    GROUP BY songs.name, artists.name
+)
+
+SELECT artist_name, song_name, playtime
+FROM
+(
+    SELECT summary.*, ROW_NUMBER() OVER (PARTITION BY artist_name ORDER BY playtime DESC) AS rank
+    FROM summary
+) summary
+WHERE rank <= 5
+    AND artist_name IN 
+    (
+        SELECT artists.name
+        FROM listens
+        JOIN artists ON listens.artist_id = artists.id
+        GROUP BY artists.name
+        ORDER BY (SUM(ms_played) / 1000 / 60 / 60) DESC
+        LIMIT 10
+    );
+
 
 -- SPOTIFY WRAPPED
 -- Duration of listening in days Grouped by year
