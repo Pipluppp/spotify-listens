@@ -16,7 +16,7 @@ CREATE TABLE listens (
     FOREIGN KEY(album_id) REFERENCES albums(id)
 );
 
-CREATE TABLE songs (
+/* CREATE TABLE songs (
     id SERIAL,
     name VARCHAR(255),
     artist_id INT,
@@ -24,6 +24,14 @@ CREATE TABLE songs (
     PRIMARY KEY(id)
     FOREIGN KEY(album_id) REFERENCES albums(id),
     FOREIGN KEY(artist_id) REFERENCES artists(id) 
+); */
+
+CREATE TABLE songs (
+    id SERIAL,
+    name VARCHAR(255),
+    artist_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(artist_id) REFERENCES artists(id)
 );
 
 CREATE TABLE artists (
@@ -38,6 +46,14 @@ CREATE TABLE albums (
     artist_id INT,
     PRIMARY KEY(id),
     FOREIGN KEY(artist_id) REFERENCES artists(id)
+);
+
+CREATE TABLE song_albums (
+    id SERIAL,
+    song_id INT,
+    album_id INT,
+    FOREIGN KEY(song_id) REFERENCES songs(id),
+    FOREIGN KEY(album_id) REFERENCES albums(id)
 );
 
 -- Account Data
