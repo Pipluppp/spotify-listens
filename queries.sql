@@ -29,16 +29,16 @@ LIMIT 10;
 
 
 -- TOP ALBUMS: Top 10 Albums by Hours listened to
-SELECT albums.name, artists.name, (SUM(ms_played) / 1000 / 60 / 60) AS play_time_hours FROM listens
+SELECT albums.name, artists.name, (SUM(ms_played) / 1000 / 60 / 60) AS playtime_hours FROM listens
 JOIN albums ON listens.album_id = albums.id
 JOIN artists ON listens.artist_id = artists.id
-GROUP BY albums.name
-ORDER BY play_time_hours DESC
+GROUP BY albums.id, artists.id
+ORDER BY playtime_hours DESC
 LIMIT 10;
 
 
 -- SONGS
--- Top 10 songs by duration listened to in hours
+-- Top 10 songs by Playtime in hours
 SELECT songs.name, artists.name, (SUM(ms_played) / 1000 / 60 / 24) AS duration_listened_hours
 FROM listens
 JOIN songs ON listens.song_id = songs.id
@@ -95,6 +95,21 @@ WHERE rank <= 5
         LIMIT 10
     );
 
+-- Top 10 in my Liked Songs, Longest Playtime
+SELECT songs.name, (SUM(ms_played) / 1000 / 60 / 60) AS playtime_hours FROM listens
+JOIN songs ON listens.song_id = songs.id
+WHERE song_id IN (SELECT song_id FROM liked_songs)
+GROUP BY songs.id
+ORDER BY playtime_hours DESC
+LIMIT 10;
+
+-- Top 10 in my Liked Songs, Most Plays
+SELECT songs.name, COUNT(*) FROM listens
+JOIN songs ON listens.song_id = songs.id
+WHERE song_id IN (SELECT song_id FROM liked_songs)
+GROUP BY songs.id
+ORDER BY COUNT(*) DESC
+LIMIT 10;
 
 -- SPOTIFY WRAPPED
 -- Duration of listening in days Grouped by year
