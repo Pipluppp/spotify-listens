@@ -111,6 +111,33 @@ GROUP BY songs.id
 ORDER BY COUNT(*) DESC
 LIMIT 10;
 
+
+-- SHUFFLE
+-- Top 10 Artists with Most Songs played in Shuffle
+SELECT artists.name, COUNT(*) FROM listens
+JOIN artists ON listens.artist_id = artists.id
+WHERE shuffle = true
+GROUP BY artists.id
+ORDER BY COUNT(*) DESC
+LIMIT 10;
+
+-- Top 10 Albums with Most Songs played in Shuffle
+SELECT albums.name, COUNT(*) FROM listens
+JOIN albums ON listens.album_id = albums.id
+WHERE shuffle = true
+GROUP BY albums.id
+ORDER BY COUNT(*) DESC
+LIMIT 10;
+
+-- Top 10 Songs with Most played in Shuffle
+SELECT songs.name, COUNT(*) FROM listens
+JOIN songs ON listens.song_id = songs.id
+WHERE shuffle = true
+GROUP BY songs.id
+ORDER BY COUNT(*) DESC
+LIMIT 10;
+
+
 -- SPOTIFY WRAPPED
 -- Duration of listening in days Grouped by year
 SELECT date_part('year', ts) AS Year, (SUM(ms_played) / 1000 / 60 / 60 / 24) AS duration_listened_days
