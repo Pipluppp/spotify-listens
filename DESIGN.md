@@ -1,8 +1,8 @@
-# Design Document
+# Design of spotify-listens
 
 By Duncan Bandojo
 
-Video overview: TODO
+Video overview: https://youtu.be/aemQYKCptuc
 
 ## Scope
 
@@ -107,7 +107,7 @@ The `followed_artists` table includes:
 * `song_id`, which is the ID of the song, a foreign key to the `id` of the `songs` table defined as `INT`
 
 
-### Relationships: TODO
+### Relationships
 
 The below entity relationship diagram describes the relationships among the entities in the database.
 
@@ -119,7 +119,7 @@ As detailed by the diagram:
 * A song can be part of many albums, while albums can also be associated with many songs
 * An album is associated with one and only one artists. But, an artist could have written many albums
 
-## Optimizations: TODO
+## Optimizations
 
 Per the typical queries in `queries.sql`, it is common for users of the database to access the song names, album names, and artist names. Hence, indexes are created on the `songs.name`, `artists.name`, and `albums.name` columns to speed up the identification of the names by those columns. Also, indexes are created among the foreign keys of the `listens` table as it is often subjected to joins with the `songs`, `artists`, and `albums` tables. 
 
