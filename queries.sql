@@ -29,7 +29,7 @@ LIMIT 10;
 
 
 -- TOP ALBUMS: Top 10 Albums by Hours listened to
-SELECT albums.name, artists.name, (SUM(ms_played) / 1000 / 60 / 60) AS playtime_hours FROM listens
+SELECT albums.name AS album_name, artists.name AS artist_name, (SUM(ms_played) / 1000 / 60 / 60) AS playtime_hours FROM listens
 JOIN albums ON listens.album_id = albums.id
 JOIN artists ON listens.artist_id = artists.id
 GROUP BY albums.id, artists.id
@@ -39,7 +39,7 @@ LIMIT 10;
 
 -- SONGS
 -- Top 10 songs by Playtime in hours
-SELECT songs.name, artists.name, (SUM(ms_played) / 1000 / 60 / 24) AS duration_listened_hours
+SELECT songs.name AS song_name, artists.name AS artist_name, (SUM(ms_played) / 1000 / 60 / 24) AS duration_listened_hours
 FROM listens
 JOIN songs ON listens.song_id = songs.id
 JOIN artists ON songs.artist_id = artists.id
@@ -100,7 +100,7 @@ SELECT songs.name, (SUM(ms_played) / 1000 / 60 / 60) AS playtime_hours FROM list
 JOIN songs ON listens.song_id = songs.id
 WHERE song_id IN (SELECT song_id FROM liked_songs)
 GROUP BY songs.id
-ORDER BY playtime_hours DESC
+ORDER BY playtime_hours ASC
 LIMIT 10;
 
 -- Top 10 in my Liked Songs, Most Plays
@@ -150,3 +150,23 @@ FROM listens
 GROUP BY year, month
 ORDER BY duration_listened_hours DESC
 LIMIT 10;
+
+
+-- Inserts, Deletes, and Updates
+-- INSERT INTO artists (name) ...
+
+-- INSERT INTO songs (name, artist_id) ...
+
+-- INSERT INTO albums (name, artist_id) ...
+
+UPDATE albums SET name = 'New album name'
+WHERE name = 'Old album name';
+
+INSERT INTO liked_songs (song_id)
+(SELECT id FROM songs WHERE name = 'FX');
+
+DELETE FROM liked_songs
+WHERE song_id = (SELECT id FROM songs WHERE name = 'FX');
+
+DELETE FROM followed_artists
+WHERE artist_id = (SELECT id FROM artists WHERE name = 'Samara Joy');
