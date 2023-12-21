@@ -1,4 +1,4 @@
--- Updated structure of listens (only with the needed columns)
+-- Listens table containing each play/list of a song
 CREATE TABLE listens (
     id SERIAL,
     ts TIMESTAMP,
@@ -16,6 +16,7 @@ CREATE TABLE listens (
     FOREIGN KEY(album_id) REFERENCES albums(id)
 );
 
+-- Songs table containing all the songs listened to
 CREATE TABLE songs (
     id SERIAL,
     name VARCHAR(255),
@@ -24,12 +25,14 @@ CREATE TABLE songs (
     FOREIGN KEY(artist_id) REFERENCES artists(id)
 );
 
+-- Artists table containing all the artists
 CREATE TABLE artists (
     id SERIAL,
     name VARCHAR(255),
     PRIMARY KEY(id)
 );
 
+-- Albums table containing all the albums
 CREATE TABLE albums (
     id SERIAL,
     name VARCHAR(255),
@@ -38,6 +41,7 @@ CREATE TABLE albums (
     FOREIGN KEY(artist_id) REFERENCES artists(id)
 );
 
+-- Junction table for the songs-albums relationship (songs in an album, and albums a song is part of)
 CREATE TABLE song_albums (
     id SERIAL,
     song_id INT,
@@ -46,7 +50,7 @@ CREATE TABLE song_albums (
     FOREIGN KEY(album_id) REFERENCES albums(id)
 );
 
--- Account Data
+-- Songs that are liked by the user
 CREATE TABLE liked_songs (
     id SERIAL,
     song_id INT,
@@ -54,6 +58,7 @@ CREATE TABLE liked_songs (
     FOREIGN KEY(song_id) REFERENCES songs(id)
 );
 
+-- Artists followed by the user
 CREATE TABLE followed_artists (
     id SERIAL,
     artist_id INT,
