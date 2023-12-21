@@ -6,7 +6,8 @@ Video overview: TODO
 
 ## Scope
 
-The Spotify streaming history database includes the Listening History of the user which allows: the processing of what songs, albums, and artists the user had listened. the duration and frequency of playing songs; stcross the existence of their Spotify account. relating the number of plays, hours listened to, and  process of tracking student progress and leaving feedback on student work.
+The Spotify streaming history database includes the Listening History of the user which allows: processing of what songs, albums, and artists the user had listened; the duration and frequency of playing songs; within the existence of their Spotify account
+
 As such, included in the database's scope is:
 
 * Listens, which includes each play of a song together with its timestamp, duration, song name, artist, album, etc.
@@ -110,20 +111,20 @@ The `followed_artists` table includes:
 
 The below entity relationship diagram describes the relationships among the entities in the database.
 
-![ER Diagram](TODO.png)
+![ER Diagram](mermaid-diagram.png)
 
 As detailed by the diagram:
 
-* A song is associated with one and only one artist. But, an artist can have many songs related to them
-* A song can be part of many albums, and albums can also be associated with many songs
-* An album is associated with one and only one artist But, an artist can have many artists related to them
+* A song is associated with one and only one artist. But, an artist could have written many songs
+* A song can be part of many albums, while albums can also be associated with many songs
+* An album is associated with one and only one artists. But, an artist could have written many albums
 
 ## Optimizations: TODO
 
-Per the typical queries in `queries.sql`, it is common for users of the database to access the song names, album names, and artist names. Hence, indexes are created on the `songs.name`, `artists.name`, and `albums.name` columns to speed up the identification of the names by those columns.
+Per the typical queries in `queries.sql`, it is common for users of the database to access the song names, album names, and artist names. Hence, indexes are created on the `songs.name`, `artists.name`, and `albums.name` columns to speed up the identification of the names by those columns. Also, indexes are created among the foreign keys of the `listens` table as it is often subjected to joins with the `songs`, `artists`, and `albums` tables. 
 
 Similarly, it is also common practice for a user of the database to concerned with viewing all students who submitted work to a particular problem. As such, an index is created on the `name` column in the `problems` table to speed the identification of problems by name.
 
 ## Limitations
 
-It's commonplace for songs and albums to have many artists associated to them, but we assume here that a song and album can onl have a single artist to it
+It's commonplace for songs and albums to have many artists associated to them, but we assume here that a song or an album can only have a single artist to them
