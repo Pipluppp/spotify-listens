@@ -21,6 +21,7 @@ CREATE TABLE songs (
     id SERIAL,
     name VARCHAR(255),
     artist_id INT,
+    liked BOOLEAN,
     PRIMARY KEY(id),
     FOREIGN KEY(artist_id) REFERENCES artists(id)
 );
@@ -29,6 +30,7 @@ CREATE TABLE songs (
 CREATE TABLE artists (
     id SERIAL,
     name VARCHAR(255),
+    followed BOOLEAN,
     PRIMARY KEY(id)
 );
 

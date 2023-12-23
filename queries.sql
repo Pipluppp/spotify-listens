@@ -1,8 +1,8 @@
 -- Select songs, artists, etc.
 SELECT * FROM songs;
 SELECT * FROM artists;
-SELECT * FROM liked_songs;
-SELECT * FROM followed_artists;
+SELECT * FROM songs WHERE liked = 'True';
+SELECT * FROM artists WHERE followed = 'True'
 
 
 -- TOP ARTISTS: By Total playtime, Count of plays, or Number of songs played
@@ -98,15 +98,15 @@ WHERE rank <= 5
 -- Top 10 in my Liked Songs, Longest Playtime
 SELECT songs.name, (SUM(ms_played) / 1000 / 60 / 60) AS playtime_hours FROM listens
 JOIN songs ON listens.song_id = songs.id
-WHERE song_id IN (SELECT song_id FROM liked_songs)
+WHERE liked = 'True'
 GROUP BY songs.id
-ORDER BY playtime_hours ASC
+ORDER BY playtime_hours DESC
 LIMIT 10;
 
 -- Top 10 in my Liked Songs, Most Plays
 SELECT songs.name, COUNT(*) FROM listens
 JOIN songs ON listens.song_id = songs.id
-WHERE song_id IN (SELECT song_id FROM liked_songs)
+WHERE liked = 'True'
 GROUP BY songs.id
 ORDER BY COUNT(*) DESC
 LIMIT 10;
@@ -161,12 +161,3 @@ LIMIT 10;
 
 UPDATE albums SET name = 'New album name'
 WHERE name = 'Old album name';
-
-INSERT INTO liked_songs (song_id)
-(SELECT id FROM songs WHERE name = 'FX');
-
-DELETE FROM liked_songs
-WHERE song_id = (SELECT id FROM songs WHERE name = 'FX');
-
-DELETE FROM followed_artists
-WHERE artist_id = (SELECT id FROM artists WHERE name = 'Samara Joy');
