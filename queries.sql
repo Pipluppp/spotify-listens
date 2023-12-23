@@ -39,7 +39,7 @@ LIMIT 10;
 
 -- SONGS
 -- Top 10 songs by Playtime in hours
-SELECT songs.name AS song_name, artists.name AS artist_name, (SUM(ms_played) / 1000 / 60 / 24) AS duration_listened_hours
+SELECT songs.name AS song_name, artists.name AS artist_name, (SUM(ms_played) / 1000 / 60 / 60) AS duration_listened_hours
 FROM listens
 JOIN songs ON listens.song_id = songs.id
 JOIN artists ON songs.artist_id = artists.id
@@ -71,7 +71,7 @@ LIMIT 10;
 -- Top 5 Songs of my Top 10 Artists
 WITH summary AS
 (
-    SELECT songs.name AS song_name, artists.name AS artist_name, SUM(ms_played) as playtime
+    SELECT songs.name AS song_name, artists.name AS artist_name, (SUM(ms_played) / 1000 / 60 ) as playtime
     FROM listens
     JOIN artists ON listens.artist_id = artists.id
     JOIN songs ON listens.song_id = songs.id
@@ -91,9 +91,10 @@ WHERE rank <= 5
         FROM listens
         JOIN artists ON listens.artist_id = artists.id
         GROUP BY artists.name
-        ORDER BY (SUM(ms_played) / 1000 / 60 / 60) DESC
+        ORDER BY (SUM(ms_played) / 1000 / 60) DESC
         LIMIT 10
     );
+
 
 -- Top 10 in my Liked Songs, Longest Playtime
 SELECT songs.name, (SUM(ms_played) / 1000 / 60 / 60) AS playtime_hours FROM listens
